@@ -5,10 +5,10 @@
         <!-- User details -->
         <div class="user-profile text-center mt-3">
             <div class="">
-                <img src="{{('backend/assets/images/users/avatar-1.jpg')}}" alt="" class="avatar-md rounded-circle">
+                <img src="{{ !empty($adminData->profile_image) ? url('uploads/admin_images/'.$adminData->profile_image) : url('uploads/no_image.jpg') }}" alt="" class="avatar-md rounded-circle">
             </div>
             <div class="mt-3">
-                <h4 class="font-size-16 mb-1">Julia Hudda</h4>
+                <h4 class="font-size-16 mb-1">{{$adminData->username}}</h4>
                 <span class="text-muted"><i class="ri-record-circle-line align-middle font-size-14 text-success"></i> Online</span>
             </div>
         </div>
@@ -32,7 +32,7 @@
                         <span>Calendar</span>
                     </a>
                 </li>
-    
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-mail-send-line"></i>
@@ -105,7 +105,7 @@
                     </ul>
                 </li>
 
-                
+
 
             </ul>
         </div>
