@@ -18,7 +18,7 @@
                                 alt="Card image cap">
                         </center>
 
-                        <div class="card-body">
+                        <div class="card-body ">
                             <hr>
                             <h4 class="card-title">Username : {{ $adminData->username }}</h4>
                             <hr>
