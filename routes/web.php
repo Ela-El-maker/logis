@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Home\HomeSliderController;
+use App\Http\Controllers\Home\AboutController;
 
 
 Route::get('/', function () {
@@ -30,6 +31,21 @@ Route::controller(HomeSliderController::class)->group(function(){
     Route::post('/update/slide', 'UpdateSlider')->name('update.slide');
     
 });
+
+Route::controller(AboutController::class)->group(function(){
+    Route::get('/about/page', 'AboutPage')->name('about.page');
+    Route::post('/update/about', 'updateAbout')->name('update.about');
+    Route::get('/about', 'HomeAbout')->name('home.about');
+    Route::get('/about/item/', 'aboutItem')->name('about.item');
+    Route::post('/store/item/', 'storeItem')->name('store.item');
+    Route::get('/all/item/', 'allItem')->name('all.item');
+    Route::get('/edit/item/{id}', 'editItem')->name('edit.item');
+    Route::post('/update/item/', 'updateItem')->name('update.item');
+    // Route::get('/delete/item/{id}', 'deleteitem')->name('delete.item.');
+});
+
+Route::delete('/delete/item/{id}', [AboutController::class, 'deleteItem'])->name('delete.item');
+
 
 
 Route::get('/dashboard', function () {

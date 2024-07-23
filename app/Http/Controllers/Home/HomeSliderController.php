@@ -93,6 +93,8 @@ class HomeSliderController extends Controller
 
     public function UpdateSlider(Request $request)
 {
+
+    
     $slideId = $request->id;
 
     $findHomeSlide = HomeSlide::findOrFail($slideId);

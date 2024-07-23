@@ -9,8 +9,8 @@
 
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="index.html" class="active">Home<br></a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="{{url('/')}}" class="active">Home<br></a></li>
+                <li><a href="{{route('home.about')}}">About</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="pricing.html">Pricing</a></li>
                 <li class="dropdown"><a href="#"><span>Dropdown</span> <i
