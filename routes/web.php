@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Home\HomeSliderController;
 use App\Http\Controllers\Home\AboutController;
+use App\Http\Controllers\Home\ProjectController;
+
 
 
 Route::get('/', function () {
@@ -42,9 +44,21 @@ Route::controller(AboutController::class)->group(function(){
     Route::get('/edit/item/{id}', 'editItem')->name('edit.item');
     Route::post('/update/item/', 'updateItem')->name('update.item');
     // Route::get('/delete/item/{id}', 'deleteitem')->name('delete.item.');
+
+});
+Route::delete('/delete/item/{id}', [AboutController::class, 'deleteItem'])->name('delete.item');
+
+Route::controller(ProjectController::class)->group(function(){
+    Route::get('/project', 'projectItem')->name('add.project');
+    Route::get('/project/details/{id}', 'HomeProjectDetails')->name('home.project.details');
+    Route::post('/store/project', 'storeProject')->name('store.project');
+    Route::get('/all/projects/', 'allProjects')->name('all.projects');
+    Route::get('/edit/project/{id}', 'editProject')->name('edit.project');
+    Route::post('/update/project/', 'updateProject')->name('update.project');
+    Route::delete('/delete/project/{id}', 'deleteProject')->name('delete.project');
 });
 
-Route::delete('/delete/item/{id}', [AboutController::class, 'deleteItem'])->name('delete.item');
+// Route::delete('/delete/project/{id}', [ProjectController::class, 'deleteProject'])->name('delete.project');
 
 
 

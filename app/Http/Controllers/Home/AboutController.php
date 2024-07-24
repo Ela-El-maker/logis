@@ -184,7 +184,6 @@ $validatedData = $request->validate([
     'item_description' => ['required', 'max:700'],
 ]);
 
-   // Create a new item instance and fill it with the validated data
 $item = AboutItems::findorfail($itemId);
 $item->item_icon = $validatedData['item_icon'];
 $item->item_title = $validatedData['item_title'];

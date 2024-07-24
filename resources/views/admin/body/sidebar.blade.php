@@ -46,11 +46,22 @@
 
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{route('about.page')}}">About Page</a></li>
-                        <li><a href="{{route('about.item')}}">About Items</a></li>
+                        <li><a href="{{route('about.item')}}">Add About Items</a></li>
                         <li><a href="{{route('all.item')}}">All About Items</a></li>
                         
                     </ul>
 
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-mail-send-line"></i>
+                        <span>Projects Section Setup</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{route('all.projects')}}">All Projects</a></li>
+                        <li><a href="{{route('add.project')}}">Add Projects</a></li>
+                    </ul>
                 </li>
 
                 <li>
