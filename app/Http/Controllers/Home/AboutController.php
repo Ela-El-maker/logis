@@ -20,7 +20,7 @@ class AboutController extends Controller
     {
         $aboutPage = About::find(1);
         return view('admin.about_page.about_page_all', compact('aboutPage'));
-        //return view('admin.about_page.about_page_all');
+        
         
     }
 

@@ -10,6 +10,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use App\Models\HomeSlide;
 
 class ProjectController extends Controller
@@ -23,70 +24,52 @@ class ProjectController extends Controller
 
     public function projectItem()
     {
-        return view('admin.project_page.add_project');
+        $projectCategories = ProjectCategory::orderBy('project_category','ASC')->get();
+        return view('admin.project_page.add_project', compact('projectCategories'));
     }
 
     public function storeProject(Request $request)
     {
         // Validate the request data
     $request->validate([
+        'project_category_id' => ['required', 'max:100'],
         'project_name' => ['required', 'max:50'],
         'project_icon' => ['required'],
         'project_title' => ['required','max:300'],
         'project_sub_title' => ['required','max:400'],
         'project_description' => ['required'],
-        'project_image' => ['required'],
+        'project_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        'project_image_1' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        'project_image_2' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+
     ],[
         'project_name.required' => 'Project Name is Required',
         'project_title.required' => 'Project Title is Required',
         'project_sub_title.required' => 'Project Sub Title is Required',
         'project_description.required' => 'Project Description is Required',
         'project_image.required' => 'Project Image is Required',
+        'project_image_1.required' => 'Additional Project Image 1 is Required',
+        'project_image_2.required' => 'Additional Project Image 2 is Required',
     ]);
 
-    // Handle the image upload
-    if ($request->file('project_image')) {
-        $width = 1020; // Maximum width for the image
-        $height = 519; // Maximum height for the image
+      // Process blog images
+      $projectImagePath = $this->processImage($request->file('project_image'), $request->blog_title, 'main');
+      $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->blog_title, 'image1');
+      $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->blog_title, 'image2');
+  
 
-        $currentTimestamp = time(); // Get the current timestamp
-        $uploadedFile = $request->file('project_image'); // Retrieve the uploaded file from the request
-        $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
-
-        // Generate a slug from the project_name
-        $imageSlug = Str::slug($request->project_name);
-        $imageName = time() . '.' . $extension;
-        $uploadedFile->move('uploads/projects', $imageName);
-
-        $imgManager = new ImageManager(new Driver());
-        $thumbImage = $imgManager->read('uploads/projects/' . $imageName);
-
-        // Construct the file name using the slug, timestamp, and original extension
-        $fileName = $imageSlug . '-' . $currentTimestamp . '.' . $extension;
-        $originalPublicDir = 'uploads/projects/' . $fileName; // Define the path to save the file
-
-        // Determine whether to set width or height to null for aspect ratio resizing
-        $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
-
-        // Resize the image while maintaining the aspect ratio
-        $thumbImage->resize($width, $height, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-
-        // Save the resized image to the specified path in the public directory
-        $thumbImage->save(public_path($originalPublicDir));
-
-        // Clean up the temporary uploaded image
-        unlink(public_path('uploads/projects/' . $imageName));
 
         // Insert the portfolio item into the database
         Project::create([
+            'project_category_id' => $request->project_category_id,
             'project_name' => $request->project_name,
             'project_icon' => $request->project_icon,
             'project_title' => $request->project_title,
             'project_sub_title' => $request->project_sub_title,
             'project_description' => $request->project_description,
-            'project_image' => $originalPublicDir,
+            'project_image' => $projectImagePath,
+            'project_image_1' => $projectImage1Path,
+            'project_image_2' => $projectImage2Path,
             'created_at' => Carbon::now(),
         ]);
 
@@ -94,32 +77,55 @@ class ProjectController extends Controller
             'message' => 'Project Item Added Successfully with Image.',
             'alert-type' => 'success',
         ];
-    } else {
-        // Insert the portfolio item into the database without an image
-        Project::create([
-            'project_name' => $request->project_name,
-            'project_icon' => $request->project_icon,
-            'project_title' => $request->project_title,
-            'project_sub_title' => $request->project_sub_title,
-            'project_description' => $request->project_description,
-            'created_at' => Carbon::now(),
-
-        ]);
-
-        $notification = [
-            'message' => 'Project Item Added Successfully without Image.',
-            'alert-type' => 'success',
-        ];
-    }
+    
 
     return redirect()->route('all.projects')->with($notification);
 
     }
 
+    private function processImage($uploadedFile, $title, $type)
+    {
+        $height = 636; // Maximum width for the image
+        $width = 852; // Maximum height for the image
+    
+        $currentTimestamp = time(); // Get the current timestamp
+        $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
+    
+        // Generate a slug from the title
+        $imageSlug = Str::slug($title);
+        $imageName = $currentTimestamp . '.' . $extension;
+        $uploadedFile->move('uploads/projects', $imageName);
+    
+        $imgManager = new ImageManager(new Driver());
+        $thumbImage = $imgManager->read('uploads/projects/' . $imageName);
+    
+        // Construct the file name using the slug, timestamp, and original extension
+        $fileName = $imageSlug . '-' . $currentTimestamp . '-' . $type . '.' . $extension;
+        $publicDir = 'uploads/projects/' . $fileName; // Define the path to save the file
+    
+        // Determine whether to set width or height to null for aspect ratio resizing
+        $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
+    
+        // Resize the image while maintaining the aspect ratio
+        $thumbImage->resize($width, $height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+    
+        // Save the resized image to the specified path in the public directory
+        $thumbImage->save(public_path($publicDir));
+        unlink(public_path('uploads/projects/' . $imageName));
+    
+        return $publicDir;
+    }
+
+
+
     public function editProject($id)
     {
         $editProject = Project::findorfail($id);
-        return view('admin.project_page.editproject', compact('editProject'));
+        $projectCategories = ProjectCategory::orderBy('project_category','ASC')->get();
+
+        return view('admin.project_page.editproject', compact('editProject','projectCategories'));
     }
 
     public function updateProject(Request $request)
@@ -240,9 +246,19 @@ class ProjectController extends Controller
 {
     $projectItems = Project::findorfail($id);
     $homeSlide = HomeSlide::find(1);
-
-    return view('frontend.home_all.project', compact('projectItems', 'homeSlide'));
+    $projectCategories = ProjectCategory::orderBy('project_category','ASC')->get();
+    $projectCategory = $projectItems->category; // Adjust as needed to fetch category
+    return view('frontend.home_all.project', compact('projectItems', 'homeSlide','projectCategories','projectCategory'));
 }
 
+public function CategoryProject($id)
+{
+    $projects = Project::inRandomOrder()->limit(3)->get();
+    $allProjects = Project::latest()->limit(5)->get();
+    $projectPost = Project::where('project_category_id',$id)->orderBy('id','DESC')->get();
+    $projectCategories = ProjectCategory::orderBy('project_category','ASC')->get();
+    $categoryName = ProjectCategory::findorfail($id);
+    return view('frontend.home_all.category_project_details', compact('projects','projectPost','projectCategories','allProjects','categoryName'));
+}
 
 }
