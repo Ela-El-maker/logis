@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Home\HomeSliderController;
 use App\Http\Controllers\Home\AboutController;
 use App\Http\Controllers\Home\ProjectController;
+use App\Http\Controllers\Home\ProjectCategoryController;
 
 
 
@@ -47,6 +48,21 @@ Route::controller(AboutController::class)->group(function(){
 
 });
 Route::delete('/delete/item/{id}', [AboutController::class, 'deleteItem'])->name('delete.item');
+
+
+
+Route::controller(ProjectCategoryController::class)->group(function(){
+    Route::get('/all/project/category', 'allProjectCategory')->name('all.project.category');
+    Route::get('/add/project/category', 'addProjectCategory')->name('add.project.category');
+    Route::post('/store/project/category', 'storeProjectCategory')->name('store.project.category');
+
+    Route::get('/edit/project/category/{id}', 'editProjectCategory')->name('edit.project.category');
+    Route::post('/update/project/category', 'updateProjectCategory')->name('update.project.category');
+    Route::delete('/delete/project/category/{id}', 'deleteProjectCategory')->name('delete.project.category');
+
+});
+
+
 
 Route::controller(ProjectController::class)->group(function(){
     Route::get('/project', 'projectItem')->name('add.project');

@@ -59,6 +59,9 @@
                         <span>Projects Section Setup</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{route('all.project.category')}}">All Project Categories</a></li>
+                        <li><a href="{{route('add.project.category')}}">Add Project Categories</a></li>
+
                         <li><a href="{{route('all.projects')}}">All Projects</a></li>
                         <li><a href="{{route('add.project')}}">Add Projects</a></li>
                     </ul>
