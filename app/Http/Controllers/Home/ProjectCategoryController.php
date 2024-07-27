@@ -21,7 +21,7 @@ class ProjectCategoryController extends Controller
      public function addProjectCategory()
      {
          
-         return view('admin.blog_category.add_project_caregory');
+         return view('admin.project_category.add_project_caregory');
      }
  
      public function storeProjectCategory(Request $request)

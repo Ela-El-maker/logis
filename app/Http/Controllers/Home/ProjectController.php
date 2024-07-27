@@ -53,9 +53,9 @@ class ProjectController extends Controller
     ]);
 
       // Process blog images
-      $projectImagePath = $this->processImage($request->file('project_image'), $request->blog_title, 'main');
-      $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->blog_title, 'image1');
-      $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->blog_title, 'image2');
+      $projectImagePath = $this->processImage($request->file('project_image'), $request->project_title, 'main');
+      $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->project_title, 'image1');
+      $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->project_title, 'image2');
   
 
 
@@ -131,75 +131,64 @@ class ProjectController extends Controller
     public function updateProject(Request $request)
     {
         $projectId = $request->id;
-        if ($request->file('project_image')) {
-            $findProject = Project::findOrFail($projectId);
-            $width = 636; // Maximum width for the image
-            $height = 852; // Maximum height for the image
+        $project = Project::findOrFail($projectId);
 
-            $currentTimestamp = time(); // Get the current timestamp, e.g., 1631703954
-            $uploadedFile = $request->file('project_image'); // Retrieve the uploaded file from the request
-            $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
+        // Validate the request data
+        $request->validate([
+            'project_category_id' => ['required', 'max:100'],
+            'project_name' => ['required', 'max:50'],
+            'project_icon' => ['required'],
+            'project_title' => ['required', 'max:300'],
+            'project_sub_title' => ['required', 'max:400'],
+            'project_description' => ['required'],
+            'project_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'project_image_1' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'project_image_2' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
 
-            // Generate a slug from the title
-            $imageSlug = Str::slug($request->title);
-            $imageName = time().'.'.$extension;
-            $uploadedFile->move('uploads/projects',$imageName);
-
-            $imgManager = new ImageManager(new Driver());
-            $thumbImage= $imgManager->read('uploads/projects/'.$imageName);
-
-            // Construct the file name using the slug, timestamp, and original extension
-            $fileName = $imageSlug . '-' . $currentTimestamp . '.' . $extension;
-            $originalPublicDir = 'uploads/projects/' . $fileName; // Define the path to save the file
-
-            // Create an instance of the image from the uploaded file and correct its orientation
-
-            // Determine whether to set width or height to null for aspect ratio resizing
-            $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
-
-            // Resize the image while maintaining the aspect ratio
-            $thumbImage->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            // Save the resized image to the specified path in the public directory
-            $thumbImage->save(public_path($originalPublicDir));
-            if (Str::startsWith($findProject->project_image, 'uploads/projects/')) {
-                unlink(public_path($findProject->project_image));
+        // Process project images
+        $projectImagePath = $project->project_image;
+        if ($request->hasFile('project_image')) {
+            if (Str::startsWith($project->project_image, 'uploads/projects/')) {
+                unlink(public_path($project->project_image));
             }
-            unlink(public_path('uploads/projects/'.$imageName));
+            $projectImagePath = $this->processImage($request->file('project_image'), $request->project_title, 'main');
+        }
 
-            Project::findOrFail($projectId)->update([
+        $projectImage1Path = $project->project_image_1;
+        if ($request->hasFile('project_image_1')) {
+            if (Str::startsWith($project->project_image_1, 'uploads/projects/')) {
+                unlink(public_path($project->project_image_1));
+            }
+            $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->project_title, 'image1');
+        }
+
+        $projectImage2Path = $project->project_image_2;
+        if ($request->hasFile('project_image_2')) {
+            if (Str::startsWith($project->project_image_2, 'uploads/projects/')) {
+                unlink(public_path($project->project_image_2));
+            }
+            $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->project_title, 'image2');
+        }
+
+        Project::findOrFail($projectId)->update([
+            'project_category_id' => $request->project_category_id,
             'project_name' => $request->project_name,
             'project_icon' => $request->project_icon,
             'project_title' => $request->project_title,
             'project_sub_title' => $request->project_sub_title,
             'project_description' => $request->project_description,
-            'project_image' => $originalPublicDir,
-            ]);
+            'project_image' => $projectImagePath,
+            'project_image_1' => $projectImage1Path,
+            'project_image_2' => $projectImage2Path,
+        ]);
 
-            $notification = [
-                'message' => 'Project Item Updated with image Successfully.',
-                'alert-type' => 'success',
-            ];
+        $notification = [
+            'message' => 'Project Item Updated Successfully with Image.',
+            'alert-type' => 'success',
+        ];
 
-            return redirect()->route('all.projects')->with($notification);
-        } else {
-            Project::findorfail($projectId)->update([
-                'project_name' => $request->project_name,
-            'project_icon' => $request->project_icon,
-            'project_title' => $request->project_title,
-            'project_sub_title' => $request->project_sub_title,
-            'project_description' => $request->project_description,
-            ]);
-
-            $notification = [
-                'message' => 'Project Item Updated without image Successfully.',
-                'alert-type' => 'success',
-            ];
-
-            return redirect()->route('all.projects')->with($notification);
-        }
+        return redirect()->route('all.projects')->with($notification);
     }
 
 
@@ -209,13 +198,26 @@ class ProjectController extends Controller
     try {
         $item = Project::findOrFail($id);
         
-        // Check if the project has an associated image
-        if (Str::startsWith($item->project_image, 'uploads/projects/')) {
-            $imagePath = public_path($item->project_image);
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
+
+            // Check if the project has associated images
+            if (Str::startsWith($item->project_image, 'uploads/projects/')) {
+                $imagePath = public_path($item->project_image);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
             }
-        }
+            if (Str::startsWith($item->project_image_1, 'uploads/projects/')) {
+                $imagePath1 = public_path($item->project_image_1);
+                if (file_exists($imagePath1)) {
+                    unlink($imagePath1);
+                }
+            }
+            if (Str::startsWith($item->project_image_2, 'uploads/projects/')) {
+                $imagePath2 = public_path($item->project_image_2);
+                if (file_exists($imagePath2)) {
+                    unlink($imagePath2);
+                }
+            }
 
 
         if ($item->delete()) {

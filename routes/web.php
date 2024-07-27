@@ -7,6 +7,7 @@ use App\Http\Controllers\Home\HomeSliderController;
 use App\Http\Controllers\Home\AboutController;
 use App\Http\Controllers\Home\ProjectController;
 use App\Http\Controllers\Home\ProjectCategoryController;
+use App\Http\Controllers\Home\ServiceCategoryController;
 
 
 
@@ -73,6 +74,18 @@ Route::controller(ProjectController::class)->group(function(){
 });
 
 // Route::delete('/delete/project/{id}', [ProjectController::class, 'deleteProject'])->name('delete.project');
+
+
+Route::controller(ServiceCategoryController::class)->group(function(){
+    Route::get('/all/service/category', 'allServiceCategory')->name('all.service.category');
+    Route::get('/add/service/category', 'addServiceCategory')->name('add.service.category');
+    Route::post('/store/service/category', 'storeServiceCategory')->name('store.service.category');
+    Route::get('/edit/service/category/{id}', 'editServiceCategory')->name('edit.service.category');
+    Route::post('/update/service/category', 'updateServiceCategory')->name('update.service.category');
+    Route::delete('/delete/service/category/{id}', 'deleteServiceCategory')->name('delete.service.category');
+
+});
+
 
 });
 
