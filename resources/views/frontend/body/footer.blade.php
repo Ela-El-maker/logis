@@ -1,5 +1,10 @@
 <footer id="footer" class="footer dark-background">
 
+    @php
+    $serviceCategories = App\Models\ServiceCategory::orderBy('service_category','ASC')->get();
+  $sections = App\Models\SectionSetting::find(1);
+        
+    @endphp
     <div class="container footer-top">
         <div class="row gy-4">
             <div class="col-lg-5 col-md-12 footer-about">
@@ -30,21 +35,19 @@
             <div class="col-lg-2 col-6 footer-links">
                 <h4>Our Services</h4>
                 <ul>
-                    <li><a href="#">Web Design</a></li>
-                    <li><a href="#">Web Development</a></li>
-                    <li><a href="#">Product Management</a></li>
-                    <li><a href="#">Marketing</a></li>
-                    <li><a href="#">Graphic Design</a></li>
+                    @foreach ($serviceCategories as $category)
+                    <li><a href="{{ route('home.service.details', $category->id) }}">{{$category->service_category}}</a></li>
+                        
+                    @endforeach
+                    
                 </ul>
             </div>
 
             <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
                 <h4>Contact Us</h4>
-                <p>A108 Adam Street</p>
-                <p>New York, NY 535022</p>
-                <p>United States</p>
-                <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-                <p><strong>Email:</strong> <span>info@example.com</span></p>
+                <p>{{$sections->contact_us_address}}</p>
+                <p class="mt-4"><strong>Phone:</strong> <span>{{$sections->contact_us_call}}</span></p>
+                <p><strong>Email:</strong> <span>{{$sections->contact_us_email}}</span></p>
             </div>
 
         </div>
