@@ -4,50 +4,49 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CustomerFeedback;
+use App\Models\ContactUs;
 use App\Models\HomeSlide;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
-class CustomerFeedbackController extends Controller
+
+class ContactUsController extends Controller
 {
     //
-    public function feedbackUs()
+    //
+    public function contactUs()
     {
         $home_slide = HomeSlide::find(1);
-        return view('frontend.home_all.feedback', compact('home_slide'));
+        return view('frontend.home_all.contact', compact('home_slide'));
     }
 
-    public function storeFeedback(Request $request)
+    public function storeContact(Request $request)
     {
-        CustomerFeedback::insert([
-            'feedback_name' => $request ->feedback_name,
-            'feedback_email' => $request ->feedback_email,
-            'feedback_company' => $request ->feedback_company,
-            'feedback_position' => $request ->feedback_position,
-            'feedback_phone' => $request ->feedback_phone,
-            'feedback_message'=>$request->feedback_message,
+        ContactUs::insert([
+            'contact_name' => $request ->contact_name,
+            'contact_email' => $request ->contact_email,
+            'contact_subject' => $request ->contact_subject,
+            'contact_message'=>$request->contact_message,
             'created_at' => Carbon::now(),
 
 
         ]);
         $notification = [
-            'message' => 'Feedback Received Successfully.',
+            'message' => 'Message Received Successfully.',
             'alert-type' => 'success',
         ];
         return redirect()->back()->with($notification);
 
     }
-
-    public function getFeedbacks(){
-        $allFeedbacks = CustomerFeedback::all();
-        return view('admin.feedbacks.all_feedbacks',compact('allFeedbacks'));
+    public function getMessages(){
+        $allMessages = ContactUs::all();
+        return view('admin.contacts.all_messages',compact('allMessages'));
     }
 
-    public function deleteFeedbacks($id)
+    public function deleteMessages($id)
     {
         try {
-            $item = CustomerFeedback::findOrFail($id);
+            $item = ContactUs::findOrFail($id);
             
     
                 
@@ -56,7 +55,7 @@ class CustomerFeedbackController extends Controller
             if ($item->delete()) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Feedback Comment deleted successfully.'
+                    'message' => 'Message deleted successfully.'
                 ]);
             } else {
                 return response()->json([
@@ -72,7 +71,7 @@ class CustomerFeedbackController extends Controller
             ], 500);
         }
     
-        return redirect()->route('get.feedbacks')->with($notification);
+        return redirect()->route('get.messages')->with($notification);
     
          
     }

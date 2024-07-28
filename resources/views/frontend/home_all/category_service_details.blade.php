@@ -5,7 +5,7 @@
 <main class="main">
 
     <!-- Page Title -->
-    <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.jpg);">
+    <div class="page-title dark-background" data-aos="fade" style="background-image: url({{asset($home_slide->backgroundImage)}});">
       <div class="container position-relative">
         <h1>{{$categoryName->service_category}}</h1>
         <nav class="breadcrumbs">

@@ -13,6 +13,7 @@ use App\Http\Controllers\Home\FeaturesController;
 use App\Http\Controllers\Home\CustomerFeedbackController;
 use App\Http\Controllers\Home\SummaryProgramController;
 use App\Http\Controllers\Home\OurTeamController;
+use App\Http\Controllers\Home\ContactUsController;
 
 
 
@@ -113,6 +114,12 @@ Route::controller(FeaturesController::class)->group(function(){
 // Feedback Routes
 Route::get('/get/feedbacks',[CustomerFeedbackController::class, 'getFeedbacks'])->name('get.feedbacks');
 Route::delete('/delete/feedbacks/{id}',[CustomerFeedbackController::class, 'deleteFeedbacks'])->name('delete.feedbacks');
+
+// Contact Routes
+Route::get('/get/contacts',[ContactUsController::class, 'getMessages'])->name('get.messages');
+Route::delete('/delete/contacts/{id}',[ContactUsController::class, 'deleteMessages'])->name('delete.messages');
+
+
 // Statistics Routes
 Route::get('/summary',[SummaryProgramController::class, 'summary'])->name('summary.page');
 Route::post('/update/summary', [SummaryProgramController::class, 'updateSummary'])->name('update.summary');
@@ -150,6 +157,9 @@ Route::get('/feedback',[CustomerFeedbackController::class, 'feedbackUs'])->name(
 Route::get('/home/summary',[SummaryProgramController::class, 'homeSummary'])->name('home.summary');
 
 
+
+Route::get('/contact',[ContactUsController::class, 'contactUs'])->name('contact.us');
+Route::post('/store/contact',[ContactUsController::class, 'storeContact'])->name('store.contact');
 
 
 

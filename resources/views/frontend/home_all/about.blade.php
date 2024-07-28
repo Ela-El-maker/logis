@@ -3,7 +3,7 @@
     <main class="main">
 
         <!-- Page Title -->
-        <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.jpg);">
+        <div class="page-title dark-background" data-aos="fade" style="background-image: url({{asset($home_slide->backgroundImage)}});">
             <div class="container position-relative">
                 <h1>Welcome To Us.</h1>
                 <nav class="breadcrumbs">
@@ -67,38 +67,7 @@
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
                 @include('frontend.home_all.summary')
-                {{-- <div class="row gy-4">
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Clients</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Projects</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Hours Of Support</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Workers</p>
-            </div>
-          </div><!-- End Stats Item -->
-
-        </div> --}}
-
+                
             </div>
 
         </section>
@@ -146,7 +115,7 @@
         <!-- /Testimonials Section -->
 
         <!-- Faq Section -->
-        <section id="faq" class="faq section">
+        {{-- <section id="faq" class="faq section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -229,7 +198,8 @@
 
             </div>
 
-        </section><!-- /Faq Section -->
+        </section> --}}
+        <!-- /Faq Section -->
 
     </main>
 @endsection

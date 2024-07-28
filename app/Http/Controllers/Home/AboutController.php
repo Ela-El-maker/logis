@@ -10,6 +10,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Carbon;
 use App\Models\About;
 use App\Models\OurTeam;
+use App\Models\HomeSlide;
 
 use App\Models\AboutItems;
 use Illuminate\Support\Facades\Log;
@@ -26,53 +27,92 @@ class AboutController extends Controller
         
     }
 
+    private function processImage($uploadedFile, $title, $type)
+    {
+        $minWidth = 800;
+        $maxWidth = 1200;
+        $minHeight = 500;
+        $maxHeight = 750;
+    
+        $currentTimestamp = time(); // Get the current timestamp
+        $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
+    
+        // Generate a slug from the title
+        $imageSlug = Str::slug($title);
+        $imageName = $currentTimestamp . '.' . $extension;
+        $uploadedFile->move('uploads/home_about', $imageName);
+    
+        $imgManager = new ImageManager(new Driver());
+        $thumbImage = $imgManager->read('uploads/home_about/' . $imageName);
+    
+        // Construct the file name using the slug, timestamp, and original extension
+        $fileName = $imageSlug . '-' . $currentTimestamp . '-' . $type . '.' . $extension;
+        $publicDir = 'uploads/home_about/' . $fileName; // Define the path to save the file
+    
+        // Get the current dimensions
+        $currentWidth = $thumbImage->width();
+        $currentHeight = $thumbImage->height();
+    
+        // Calculate the aspect ratio
+        $aspectRatio = $currentWidth / $currentHeight;
+    
+        // Determine the new dimensions
+        $newWidth = $currentWidth;
+        $newHeight = $currentHeight;
+    
+        if ($newWidth < $minWidth || $newHeight < $minHeight) {
+            // If either dimension is too small, scale up proportionally
+            if ($newWidth < $minWidth) {
+                $newWidth = $minWidth;
+                $newHeight = $newWidth / $aspectRatio;
+            }
+            if ($newHeight < $minHeight) {
+                $newHeight = $minHeight;
+                $newWidth = $newHeight * $aspectRatio;
+            }
+        } elseif ($newWidth > $maxWidth || $newHeight > $maxHeight) {
+            // If either dimension is too large, scale down proportionally
+            if ($newWidth > $maxWidth) {
+                $newWidth = $maxWidth;
+                $newHeight = $newWidth / $aspectRatio;
+            }
+            if ($newHeight > $maxHeight) {
+                $newHeight = $maxHeight;
+                $newWidth = $newHeight * $aspectRatio;
+            }
+        }
+    
+        // Resize the image
+        $thumbImage->resize($newWidth, $newHeight);
+    
+        // Save the resized image to the specified path in the public directory
+        $thumbImage->save(public_path($publicDir));
+        unlink(public_path('uploads/home_about/' . $imageName));
+    
+        return $publicDir;
+    }
+
     public function updateAbout(Request $request)
     {
         $aboutId = $request->id;
-        if ($request->file('foreground_image')) {
-            $findAbout = About::findOrFail($aboutId);
-            $width = 700; // Maximum width for the image
-            $height = 950; // Maximum height for the image
-
-            $currentTimestamp = time(); // Get the current timestamp, e.g., 1631703954
-            $uploadedFile = $request->file('foreground_image'); // Retrieve the uploaded file from the request
-            $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
-
-            // Generate a slug from the title
-            $imageSlug = Str::slug($request->title);
-            $imageName = time().'.'.$extension;
-            $uploadedFile->move('uploads/home_about',$imageName);
-
-            $imgManager = new ImageManager(new Driver());
-            $thumbImage= $imgManager->read('uploads/home_about/'.$imageName);
-
-            // Construct the file name using the slug, timestamp, and original extension
-            $fileName = $imageSlug . '-' . $currentTimestamp . '.' . $extension;
-            $originalPublicDir = 'uploads/home_about/' . $fileName; // Define the path to save the file
-
-            // Create an instance of the image from the uploaded file and correct its orientation
-
-            // Determine whether to set width or height to null for aspect ratio resizing
-            $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
-
-            // Resize the image while maintaining the aspect ratio
-            $thumbImage->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            // Save the resized image to the specified path in the public directory
-            $thumbImage->save(public_path($originalPublicDir));
-            if (Str::startsWith($findAbout->foreground_image, 'uploads/home_about/')) {
-                unlink(public_path($findAbout->foreground_image));
-            }
-            unlink(public_path('uploads/home_about/'.$imageName));
+        $findAbout = About::findOrFail($aboutId);
+        
+        // Process foreground image
+    if ($request->file('foreground_image')) {
+        $foregroundImagePath = $this->processImage($request->file('foreground_image'), $request->title_id, 'foreground');
+        if (Str::startsWith($findAbout->foreground_image, 'uploads/home_about/')) {
+            unlink(public_path($findAbout->foreground_image));
+        }
+    } else {
+        $foregroundImagePath = $findAbout->foreground_image;
+    }
 
             About::findOrFail($aboutId)->update([
                 'title' => $request->title,
                 'sub_title' => $request->sub_title,
                 'description' => $request->description,
                 'video_url' => $request->video_url,
-                'foreground_image' => $originalPublicDir,
+                'foreground_image' => $foregroundImagePath,
             ]);
 
             $notification = [
@@ -81,22 +121,7 @@ class AboutController extends Controller
             ];
 
             return redirect()->back()->with($notification);
-        } else {
-            About::findorfail($aboutId)->update([
-                'title' => $request->title,
-                'sub_title' => $request->sub_title,
-                'description' => $request->description,
-                'video_url' => $request->video_url,
-                
-            ]);
-
-            $notification = [
-                'message' => 'About Page Updated without image Successfully.',
-                'alert-type' => 'success',
-            ];
-
-            return redirect()->back()->with($notification);
-        }
+       
     }
 
 
@@ -104,9 +129,10 @@ class AboutController extends Controller
     public  function HomeAbout()
     {
         $about = About::find(1);
+        $home_slide = HomeSlide::find(1);
         $teamMembers = OurTeam::inrandomorder()->limit(3)->get();
         $aboutItems = AboutItems::inRandomOrder()->limit(4)->get();
-        return view('frontend.home_all.about', compact('about', 'aboutItems','teamMembers'));
+        return view('frontend.home_all.about', compact('about', 'aboutItems','teamMembers','home_slide'));
         
     }
 
@@ -158,27 +184,7 @@ public function editItem($id)
        
 public function updateItem(Request $request)
 {
-    // Validate the request data
-//     $validatedData = $request->validate([
-//         'item_icon' => ['required', 'max:200'],
-//         'item_title' => ['required', 'max:500'],
-//         'item_description' => ['required', 'max:700'],
-//     ]);
 
-//     // Find the item by its ID
-//     $item = AboutItems::findOrFail($id);
-
-//     // Update the item with the validated data
-//     $item->icon = $validatedData['item_icon'];
-//     $item->title = $validatedData['item_title'];
-//     $item->description = $validatedData['item_description'];
-
-//     // Save the updated item to the database
-//     $item->save();
-
-//     // Optionally, you can redirect or return a response
-//     return redirect()->route('items.index')->with('success', 'Item updated successfully.');
-// }
 
 $itemId = $request->id;
 $validatedData = $request->validate([

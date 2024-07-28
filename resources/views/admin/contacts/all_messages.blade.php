@@ -7,12 +7,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">All Feedbacks Items List</h4>
+                        <h4 class="mb-sm-0">All Messages Items List</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Create Image</a></li>
-                                <li class="breadcrumb-item active">Feedbacks Tables</li>
+                                <li class="breadcrumb-item active">Messages Tables</li>
                             </ol>
                         </div>
 
@@ -26,7 +26,7 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="card-title">All Feedbacks List</h4>
+                            <h4 class="card-title">All Messages List</h4>
                             <p><br></p>
 
                             <div class="table-responsive">
@@ -34,28 +34,24 @@
                                     <thead>
                                         <tr>
                                             <th>Ser. No</th>
-                                            <th>Feedback Name</th>
-                                            <th>Feedback Email</th>
-                                            <th>Sender Company</th>
-                                            <th>Sender Position</th>
-                                            <th>Sender Phone</th>
-                                            <th>Feedback Comment</th>
+                                            <th>Sender Name</th>
+                                            <th>Sender Email</th>
+                                            <th>Message Subject</th>
+                                            <th>Message Comment</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @php($i = 1)
-                                        @foreach ($allFeedbacks as $item)
+                                        @foreach ($allMessages as $item)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
-                                                <td>{{ $item->feedback_name }}</td>
-                                                <td>{{ $item->feedback_email }}</td>
-                                                <td>{{ $item->feedback_company }}</td>
-                                                <td>{{ $item->feedback_position }}</td>
-                                                <td>{{ $item->feedback_phone }}</td>
-                                                <td style="white-space: normal; word-wrap: break-word; overflow: hidden; text-overflow: ellipsis;">{{ $item->feedback_message }}</td>
+                                                <td>{{ $item->contact_name }}</td>
+                                                <td>{{ $item->contact_email }}</td>
+                                                <td>{{ $item->contact_subject }}</td>
+                                                <td style="white-space: normal; word-wrap: break-word; overflow: hidden; text-overflow: ellipsis;">{{ $item->contact_message }}</td>
                                                 <td style="width: 150px;">
-                                                    <a href="{{ route('delete.feedbacks', $item->id) }}" class="btn btn-danger sm delete-btn" title="Delete Data"><i class="fas fa-trash-alt"></i></a>
+                                                    <a href="{{ route('delete.messages', $item->id) }}" class="btn btn-danger sm delete-btn" title="Delete Data"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
                                             </tr>
                                        @endforeach

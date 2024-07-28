@@ -115,6 +115,13 @@
                 </li>
 
                 <li>
+                    <a href="{{route('get.messages')}}" class=" waves-effect">
+                        <i class="ri-calendar-2-line"></i>
+                        <span>All Contact Messages</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-mail-send-line"></i>
                         <span>Our Teams</span>
