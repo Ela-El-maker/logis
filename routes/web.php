@@ -8,6 +8,9 @@ use App\Http\Controllers\Home\AboutController;
 use App\Http\Controllers\Home\ProjectController;
 use App\Http\Controllers\Home\ProjectCategoryController;
 use App\Http\Controllers\Home\ServiceCategoryController;
+use App\Http\Controllers\Home\ServiceController;
+use App\Http\Controllers\Home\FeaturesController;
+
 
 
 
@@ -86,14 +89,42 @@ Route::controller(ServiceCategoryController::class)->group(function(){
 
 });
 
+Route::controller(ServiceController::class)->group(function(){
+    Route::get('/service', 'serviceItem')->name('add.service');
+    Route::post('/store/service', 'storeService')->name('store.service');
+    Route::get('/all/services/', 'allServices')->name('all.services');
+    Route::get('/edit/service/{id}', 'editService')->name('edit.service');
+    Route::post('/update/service/', 'updateService')->name('update.service');
+    Route::delete('/delete/service/{id}', 'deleteService')->name('delete.service');
+});
+
+Route::controller(FeaturesController::class)->group(function(){
+    Route::get('/feature', 'featureItem')->name('add.feature');
+    Route::post('/store/feature', 'storeFeature')->name('store.feature');
+    Route::get('/all/features/', 'allFeatures')->name('all.features');
+    Route::get('/edit/feature/{id}', 'editFeature')->name('edit.feature');
+    Route::post('/update/feature/', 'updateFeature')->name('update.feature');
+    Route::delete('/delete/feature/{id}', 'deleteFeature')->name('delete.feature');
+});
+
 
 });
 
 // Public Routes
 Route::get('/about/page', [AboutController::class,'AboutPage'])->name('about.page');
+Route::get('/projects/page', [ProjectController::class,'projectsPage'])->name('projects.page');
+Route::get('/services/page', [ServiceController::class,'servicesPage'])->name('services.page');
+Route::get('/features/page', [FeaturesController::class,'featuresPage'])->name('features.page');
+
+
 Route::get('/project/details/{id}', [ProjectController::class,'HomeProjectDetails'])->name('home.project.details');
+Route::get('/service/details/{id}', [ServiceController::class,'HomeServiceDetails'])->name('home.service.details');
+
+Route::get('/category/project/{id}', [ProjectController::class, 'CategoryProject'])->name('category.project');
+Route::get('/category/service/{id}', [ServiceController::class, 'CategoryService'])->name('category.service');
 Route::get('/about',[AboutController::class, 'HomeAbout'])->name('home.about');
-Route::get('/category/project/{id}',[ProjectController::class, 'CategoryProject'])->name('category.project');
+
+
 
 
 

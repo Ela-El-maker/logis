@@ -4,17 +4,17 @@
 
         <!-- Page Title -->
         <div class="page-title dark-background" data-aos="fade"
-            style="background-image: url({{ asset($homeSlide->backgroundImage) }});">
+            style="background-image: url({{ asset($serviceCategory->service_category_image) }});">
             <div class="container position-relative">
-                <h1>{{ $projectItems->project_name }}</h1>
+                <h1>{{ $serviceItems->service_name }}</h1>
                 {{-- <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p> --}}
                 <nav class="breadcrumbs">
                     <ol>
                         <li><a href="{{ url('/') }}">Home</a></li>
                         <li><a
-                                href="{{ route('category.project', $projectCategory->id) }}">{{ $projectCategory->project_category }}</a>
+                                href="{{ route('category.service', $serviceCategory->id) }}">{{ $serviceCategory->service_category }}</a>
                         </li>
-                        {{-- <li class="current">{{$projectItems->project_name}}</li> --}}
+                        {{-- <li class="current">{{$serviceItems->service_name}}</li> --}}
                     </ol>
                 </nav>
             </div>
@@ -26,30 +26,30 @@
                 <div class="row gy-4">
                     <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                         <div class="services-list">
-                            @foreach ($projectCategories as $category)
-                                <a href="{{ route('category.project', $category->id) }}"
-                                    class="active">{{ $category->project_category }}</a>
+                            @foreach ($serviceCategories as $category)
+                                <a href="{{ route('category.service', $category->id) }}"
+                                    class="active">{{ $category->service_category }}</a>
                             @endforeach
 
                         </div>
 
-                        <h4>{{ $projectItems->project_name }}</h4>
-                        <p>{{ $projectItems->project_sub_title }}</p>
+                        <h4>{{ $serviceCategory->service_category }}</h4>
+                        <p>{{ $serviceItems->service_sub_title }}</p>
 
 
                     </div>
 
                     <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-                        <img src="{{ asset($projectItems->project_image) }}" alt="" class="img-fluid services-img">
-                        <h3>{{ $projectItems->project_title }}</h3>
-                        <!-- New Images Row -->
+                        <img src="{{ asset($serviceItems->service_image) }}" alt="" class="img-fluid services-img">
+                        <h3>{{ $serviceItems->service_title }}</h3>
+                        {{-- <!-- New Images Row -->
                         <div class="images-row">
-                            <img src="{{ asset($projectItems->project_image_1) }}" alt="Image 1"
+                            <img src="{{ asset($serviceItems->service_image_1) }}" alt="Image 1"
                                 class="img-fluid side-image">
-                            <img src="{{ asset($projectItems->project_image_2) }}" alt="Image 2"
+                            <img src="{{ asset($serviceItems->service_image_2) }}" alt="Image 2"
                                 class="img-fluid side-image">
-                        </div>
-                        <p>{!! $projectItems->project_description !!}</p>
+                        </div> --}}
+                        <p>{!! $serviceItems->service_description !!}</p>
                     </div>
                 </div>
             </div>

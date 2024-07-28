@@ -53,9 +53,9 @@ class ProjectController extends Controller
     ]);
 
       // Process blog images
-      $projectImagePath = $this->processImage($request->file('project_image'), $request->project_title, 'main');
-      $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->project_title, 'image1');
-      $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->project_title, 'image2');
+      $projectImagePath = $this->processImage($request->file('project_image'), $request->project_id, 'main');
+      $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->project_id, 'image1');
+      $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->project_id, 'image2');
   
 
 
@@ -152,7 +152,7 @@ class ProjectController extends Controller
             if (Str::startsWith($project->project_image, 'uploads/projects/')) {
                 unlink(public_path($project->project_image));
             }
-            $projectImagePath = $this->processImage($request->file('project_image'), $request->project_title, 'main');
+            $projectImagePath = $this->processImage($request->file('project_image'), $request->project_id, 'main');
         }
 
         $projectImage1Path = $project->project_image_1;
@@ -160,7 +160,7 @@ class ProjectController extends Controller
             if (Str::startsWith($project->project_image_1, 'uploads/projects/')) {
                 unlink(public_path($project->project_image_1));
             }
-            $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->project_title, 'image1');
+            $projectImage1Path = $this->processImage($request->file('project_image_1'), $request->project_id, 'image1');
         }
 
         $projectImage2Path = $project->project_image_2;
@@ -168,7 +168,7 @@ class ProjectController extends Controller
             if (Str::startsWith($project->project_image_2, 'uploads/projects/')) {
                 unlink(public_path($project->project_image_2));
             }
-            $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->project_title, 'image2');
+            $projectImage2Path = $this->processImage($request->file('project_image_2'), $request->project_id, 'image2');
         }
 
         Project::findOrFail($projectId)->update([
@@ -244,6 +244,8 @@ class ProjectController extends Controller
     }
 
 
+
+
     public function HomeProjectDetails($id)
 {
     $projectItems = Project::findorfail($id);
@@ -261,6 +263,15 @@ public function CategoryProject($id)
     $projectCategories = ProjectCategory::orderBy('project_category','ASC')->get();
     $categoryName = ProjectCategory::findorfail($id);
     return view('frontend.home_all.category_project_details', compact('projects','projectPost','projectCategories','allProjects','categoryName'));
+}
+
+
+public function projectsPage()
+{
+    $projects = Project::all();
+    $homeSlide = HomeSlide::find(1);
+
+    return view('frontend.home_all.all_projects', compact('projects','homeSlide'));
 }
 
 }

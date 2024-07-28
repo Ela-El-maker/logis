@@ -7,11 +7,11 @@
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.jpg);">
       <div class="container position-relative">
-        <h1>{{$categoryName->project_category}}</h1>
+        <h1>{{$categoryName->service_category}}</h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="{{url('/')}}">Home</a></li>
-            <li class="current">{{$categoryName->project_category}}</li>
+            <li class="current">{{$categoryName->service_category}}</li>
           </ol>
         </nav>
       </div>
@@ -82,19 +82,19 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <span>{{$categoryName->project_category}} Projects<br></span>
-        <h2>{{$categoryName->project_category}} Projects</h2>
+        <span>Our {{$categoryName->service_category}} Services<br></span>
+        <h2>Our {{$categoryName->service_category}} Services</h2>
       </div><!-- End Section Title -->
 
       <div class="container">
 
         <div class="row gy-4">
 
-      @foreach ($projectPost as $project)
+      @foreach ($servicePost as $service)
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <a href="{{route('home.project.details',$project->id)}}" class="card-link">
+        <a href="{{route('home.service.details',$service->id)}}" class="card-link">
           <div class="card" style="
-            background-image: url({{asset($project->project_image)}});
+            background-image: url({{asset($service->service_image)}});
             background-size: cover;
             background-position: center;
             height: 100%;
@@ -109,12 +109,12 @@
               background: rgba(255, 255, 255, 0.8);
               padding: 10px;
               border-radius: 5px;
-            ">{{$project->project_name}}</h3>
+            ">{{$service->service_title}}</h3>
             <p style="
               background: rgba(255, 255, 255, 0.8);
               padding: 10px;
               border-radius: 5px;
-            ">{!! Str::limit($project->project_title, 150)!!}</p>
+            ">{!! Str::limit($service->service_sub_title, 150)!!}</p>
           </div>
         </a>
       </div><!-- End Card Item -->

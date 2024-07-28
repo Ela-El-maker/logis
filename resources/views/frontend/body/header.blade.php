@@ -11,7 +11,10 @@
             <ul>
                 <li><a href="{{url('/')}}" class="active">Home<br></a></li>
                 <li><a href="{{route('home.about')}}">About</a></li>
-                <li><a href="services.html">Services</a></li>
+                <li><a href="{{route('projects.page')}}">Projects</a></li>
+                <li><a href="{{route('services.page')}}">Services</a></li>
+                <li><a href="{{route('features.page')}}">Features</a></li>
+
                 <li><a href="pricing.html">Pricing</a></li>
                 <li class="dropdown"><a href="#"><span>Dropdown</span> <i
                             class="bi bi-chevron-down toggle-dropdown"></i></a>

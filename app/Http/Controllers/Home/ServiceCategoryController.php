@@ -42,7 +42,7 @@ class ServiceCategoryController extends Controller
         'service_category_image.required' => 'Service Category Image is Required',
 
      ]);
-     $serviceImagePath = $this->processImage($request->file('service_category_image'), $request->service_category, 'main');
+     $serviceImagePath = $this->processImage($request->file('service_category_image'), $request->service_id, 'main');
 
  
          // Insert the service item into the database
@@ -66,39 +66,108 @@ class ServiceCategoryController extends Controller
      }
 
      private function processImage($uploadedFile, $title, $type)
-    {
-        $height = 636; // Maximum width for the image
-        $width = 852; // Maximum height for the image
-    
-        $currentTimestamp = time(); // Get the current timestamp
-        $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
-    
-        // Generate a slug from the title
-        $imageSlug = Str::slug($title);
-        $imageName = $currentTimestamp . '.' . $extension;
-        $uploadedFile->move('uploads/services', $imageName);
-    
-        $imgManager = new ImageManager(new Driver());
-        $thumbImage = $imgManager->read('uploads/services/' . $imageName);
-    
-        // Construct the file name using the slug, timestamp, and original extension
-        $fileName = $imageSlug . '-' . $currentTimestamp . '-' . $type . '.' . $extension;
-        $publicDir = 'uploads/services/' . $fileName; // Define the path to save the file
-    
-        // Determine whether to set width or height to null for aspect ratio resizing
-        $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
-    
-        // Resize the image while maintaining the aspect ratio
-        $thumbImage->resize($width, $height, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-    
-        // Save the resized image to the specified path in the public directory
-        $thumbImage->save(public_path($publicDir));
-        unlink(public_path('uploads/services/' . $imageName));
-    
-        return $publicDir;
+{
+    $minWidth = 800;
+    $maxWidth = 1200;
+    $minHeight = 500;
+    $maxHeight = 750;
+
+    $currentTimestamp = time(); // Get the current timestamp
+    $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
+
+    // Generate a slug from the title
+    $imageSlug = Str::slug($title);
+    $imageName = $currentTimestamp . '.' . $extension;
+    $uploadedFile->move('uploads/services', $imageName);
+
+    $imgManager = new ImageManager(new Driver());
+    $thumbImage = $imgManager->read('uploads/services/' . $imageName);
+
+    // Construct the file name using the slug, timestamp, and original extension
+    $fileName = $imageSlug . '-' . $currentTimestamp . '-' . $type . '.' . $extension;
+    $publicDir = 'uploads/services/' . $fileName; // Define the path to save the file
+
+    // Get the current dimensions
+    $currentWidth = $thumbImage->width();
+    $currentHeight = $thumbImage->height();
+
+    // Calculate the aspect ratio
+    $aspectRatio = $currentWidth / $currentHeight;
+
+    // Determine the new dimensions
+    $newWidth = $currentWidth;
+    $newHeight = $currentHeight;
+
+    if ($newWidth < $minWidth || $newHeight < $minHeight) {
+        // If either dimension is too small, scale up proportionally
+        if ($newWidth < $minWidth) {
+            $newWidth = $minWidth;
+            $newHeight = $newWidth / $aspectRatio;
+        }
+        if ($newHeight < $minHeight) {
+            $newHeight = $minHeight;
+            $newWidth = $newHeight * $aspectRatio;
+        }
+    } elseif ($newWidth > $maxWidth || $newHeight > $maxHeight) {
+        // If either dimension is too large, scale down proportionally
+        if ($newWidth > $maxWidth) {
+            $newWidth = $maxWidth;
+            $newHeight = $newWidth / $aspectRatio;
+        }
+        if ($newHeight > $maxHeight) {
+            $newHeight = $maxHeight;
+            $newWidth = $newHeight * $aspectRatio;
+        }
     }
+
+    // Resize the image
+    $thumbImage->resize($newWidth, $newHeight);
+
+    // Save the resized image to the specified path in the public directory
+    $thumbImage->save(public_path($publicDir));
+    unlink(public_path('uploads/services/' . $imageName));
+
+    return $publicDir;
+}
+
+
+    //  private function processImage($uploadedFile, $title, $type)
+    // {
+    //     $height = 636; // Maximum width for the image
+    //     $width = 852; // Maximum height for the image
+    
+    //     // $height = 50; // Maximum width for the image
+    //     // $width = 2000; // Maximum height for the image
+
+    //     $currentTimestamp = time(); // Get the current timestamp
+    //     $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
+    
+    //     // Generate a slug from the title
+    //     $imageSlug = Str::slug($title);
+    //     $imageName = $currentTimestamp . '.' . $extension;
+    //     $uploadedFile->move('uploads/services', $imageName);
+    
+    //     $imgManager = new ImageManager(new Driver());
+    //     $thumbImage = $imgManager->read('uploads/services/' . $imageName);
+    
+    //     // Construct the file name using the slug, timestamp, and original extension
+    //     $fileName = $imageSlug . '-' . $currentTimestamp . '-' . $type . '.' . $extension;
+    //     $publicDir = 'uploads/services/' . $fileName; // Define the path to save the file
+    
+    //     // Determine whether to set width or height to null for aspect ratio resizing
+    //     $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
+    
+    //     // Resize the image while maintaining the aspect ratio
+    //     $thumbImage->resize($width, $height, function ($constraint) {
+    //         $constraint->aspectRatio();
+    //     });
+    
+    //     // Save the resized image to the specified path in the public directory
+    //     $thumbImage->save(public_path($publicDir));
+    //     unlink(public_path('uploads/services/' . $imageName));
+    
+    //     return $publicDir;
+    // }
  
      public function editServiceCategory($id)
      {
@@ -116,7 +185,7 @@ class ServiceCategoryController extends Controller
      $request->validate([
         'service_category' => ['required', 'max:100'],
         'service_category_description'=>['required', 'max:5000'],
-       'service_category_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+       'service_category_image' => [ 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
 
     ],[
         'service_category.required' => 'Service Category Name is Required',
@@ -130,17 +199,16 @@ class ServiceCategoryController extends Controller
           if (Str::startsWith($service->service_category_image, 'uploads/services/')) {
               unlink(public_path($service->service_category_image));
           }
-          $serviceImagePath = $this->processImage($request->file('service_category_image'), $request->service_category, 'main');
+          $serviceImagePath = $this->processImage($request->file('service_category_image'), $request->service_id, 'main');
       }
  
          // Insert the service item into the database
-         ServiceCategory::findorfail($serviceCategoryId)->update([
+         $service->update([
              'service_category' => $request->service_category,
              'service_category_description' => $request->service_category_description,
              'service_category_image' => $serviceImagePath,
 
             
-             'created_at' => Carbon::now(),
          ]);
  
          $notification = [

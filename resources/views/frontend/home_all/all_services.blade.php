@@ -5,222 +5,59 @@
 <main class="main">
 
     <!-- Page Title -->
-    <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.jpg);">
+    <div class="page-title dark-background" data-aos="fade" style="background-image: url({{asset($homeSlide->backgroundImage)}});">
       <div class="container position-relative">
-        <h1>{{$categoryName->project_category}}</h1>
+        <h1>Services</h1>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="{{url('/')}}">Home</a></li>
-            <li class="current">{{$categoryName->project_category}}</li>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Services</li>
           </ol>
         </nav>
       </div>
     </div><!-- End Page Title -->
 
-    <!-- Featured Services Section -->
-    <section id="featured-services" class="featured-services section">
-
-      <div class="container">
-
-        {{-- <div class="row gy-4">
-
-          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
-            <div class="icon flex-shrink-0"><i class="fa-solid fa-cart-flatbed"></i></div>
-            <div>
-              <h4 class="title">Lorem Ipsum</h4>
-              <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
-              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-          <!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
-            <div class="icon flex-shrink-0"><i class="fa-solid fa-truck"></i></div>
-            <div>
-              <h4 class="title">Dolor Sitema</h4>
-              <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
-              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="300">
-            <div class="icon flex-shrink-0"><i class="fa-solid fa-truck-ramp-box"></i></div>
-            <div>
-              <h4 class="title">Sed ut perspiciatis</h4>
-              <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
-              <a href="#" class="readmore stretched-link"><span>Learn More</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-          <!-- End Service Item -->
-
-        </div> --}}
-        <div class="row gy-4">
-            @foreach ($projects as $item)
-            <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
-                <div class="icon flex-shrink-0"><i class="{{$item->project_icon}}"></i></div>
-                <div>
-                    <h4 class="title">{{$item->project_name}}</h4>
-                    <p class="description">{!!$item->project_title!!}</p>
-                    <a href="{{route('home.project.details', $item->id)}}" class="readmore stretched-link"><span>Learn More</span><i
-                            class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-            <!-- End Service Item -->
-            @endforeach
-           
-
-          
-        </div>
-
-      </div>
-
-    </section>
-    <!-- /Featured Services Section -->
-
+   
     <!-- Services Section -->
     <section id="services" class="services section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <span>{{$categoryName->project_category}} Projects<br></span>
-        <h2>{{$categoryName->project_category}} Projects</h2>
+        <span>Our Services<br></span>
+        <h2>Our Services</h2>
       </div><!-- End Section Title -->
 
       <div class="container">
 
         <div class="row gy-4">
 
-      @foreach ($projectPost as $project)
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <a href="{{route('home.project.details',$project->id)}}" class="card-link">
-          <div class="card" style="
-            background-image: url({{asset($project->project_image)}});
-            background-size: cover;
-            background-position: center;
-            height: 100%;
-            padding: 20px;
-            border-radius: 5px;
-            position: relative;
-            transition: transform 0.3s;
-            text-decoration: none;
-            color: inherit;
-          ">
-            <h3 style="
-              background: rgba(255, 255, 255, 0.8);
-              padding: 10px;
-              border-radius: 5px;
-            ">{{$project->project_name}}</h3>
-            <p style="
-              background: rgba(255, 255, 255, 0.8);
-              padding: 10px;
-              border-radius: 5px;
-            ">{!! Str::limit($project->project_title, 150)!!}</p>
-          </div>
-        </a>
-      </div><!-- End Card Item -->
-      @endforeach
-     
-          
-          <!-- Inline CSS for hover effect -->
-          <style>
-            .card-link .card:hover {
-              transform: scale(1.05); /* Optional: add a hover effect */
-            }
-          </style>
-          <!-- End Card Item -->
+       @foreach ($serviceCategories as $item)
+               <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="card">
+              <div class="card-img">
+                <img src="{{asset($item->service_category_image)}}" alt="" class="img-fluid">
+              </div>
+              <h3><a href="{{ route('home.service.details', $item->id) }}" class="stretched-link">{{$item->service_category}}</a></h3>
+              <p>{!! Str::limit($item->service_category_description, 150) !!}</p>
+            </div>
+          </div><!-- End Card Item -->
 
-       
+       @endforeach
+      
+         
         </div>
 
       </div>
 
     </section><!-- /Services Section -->
+ <!-- Section Title -->
+ <div class="container section-title" data-aos="fade-up">
+    <span>Our Customer Feedback</span>
+    <h2>Our Customer Feedback</h2>
+    <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+  </div><!-- End Section Title -->
 
-    <!-- Features Section -->
-    <section id="features" class="features section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <span>Features</span>
-        <h2>Features</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
-
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
-            <img src="assets/img/features-1.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
-            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
-            <p class="fst-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
-            </p>
-            <ul>
-              <li><i class="bi bi-check"></i><span> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-              <li><i class="bi bi-check"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-              <li><i class="bi bi-check"></i> <span>Ullam est qui quos consequatur eos accusamus.</span></li>
-            </ul>
-          </div>
-        </div><!-- Features Item -->
-
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-            <img src="assets/img/features-2.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
-            <h3>Corporis temporibus maiores provident</h3>
-            <p class="fst-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
-            </p>
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum
-            </p>
-          </div>
-        </div><!-- Features Item -->
-
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out">
-            <img src="assets/img/features-3.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-7" data-aos="fade-up">
-            <h3>Sunt consequatur ad ut est nulla consectetur reiciendis animi voluptas</h3>
-            <p>Cupiditate placeat cupiditate placeat est ipsam culpa. Delectus quia minima quod. Sunt saepe odit aut quia voluptatem hic voluptas dolor doloremque.</p>
-            <ul>
-              <li><i class="bi bi-check"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-              <li><i class="bi bi-check"></i><span> Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-              <li><i class="bi bi-check"></i> <span>Facilis ut et voluptatem aperiam. Autem soluta ad fugiat</span>.</li>
-            </ul>
-          </div>
-        </div><!-- Features Item -->
-
-        <div class="row gy-4 align-items-center features-item">
-          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out">
-            <img src="assets/img/features-4.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up">
-            <h3>Quas et necessitatibus eaque impedit ipsum animi consequatur incidunt in</h3>
-            <p class="fst-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
-            </p>
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum
-            </p>
-          </div>
-        </div><!-- Features Item -->
-
-      </div>
-
-    </section><!-- /Features Section -->
-
+ 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section dark-background">
 
@@ -405,9 +242,9 @@
 
       </div>
 
-    </section><!-- /Faq Section -->
+    </section>
+    <!-- /Faq Section -->
 
   </main>
-
 
 @endsection

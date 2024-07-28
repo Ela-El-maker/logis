@@ -102,9 +102,9 @@ class AboutController extends Controller
     public  function HomeAbout()
     {
         $about = About::find(1);
-    $aboutItems = AboutItems::inRandomOrder()->limit(4)->get();
-    return view('frontend.home_all.about', compact('about', 'aboutItems'));
-        // return view('frontend.home_all.about');
+        $aboutItems = AboutItems::inRandomOrder()->limit(4)->get();
+        return view('frontend.home_all.about', compact('about', 'aboutItems'));
+        
     }
 
     public function aboutItem()

@@ -69,6 +69,8 @@
 
 
                 
+                
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-mail-send-line"></i>
@@ -78,12 +80,21 @@
                         <li><a href="{{route('all.service.category')}}">All Service Categories</a></li>
                         <li><a href="{{route('add.service.category')}}">Add Service Categories</a></li>
 
-                        <li><a href="{{route('all.projects')}}">All Projects</a></li>
-                        <li><a href="{{route('add.project')}}">Add Projects</a></li>
+                        <li><a href="{{route('all.services')}}">All Services</a></li>
+                        <li><a href="{{route('add.service')}}">Add Service</a></li>
                     </ul>
                 </li>
 
-
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-mail-send-line"></i>
+                        <span>Features Section Setup</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{route('all.features')}}">All Features</a></li>
+                        <li><a href="{{route('add.feature')}}">Add Feature</a></li>
+                    </ul>
+                </li>
 
                 <li>
                     <a href="calendar.html" class=" waves-effect">
