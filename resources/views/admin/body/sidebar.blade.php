@@ -156,7 +156,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="#">Footer Help Links</a></li>
                         <li><a href="#">Footer Usefull Links</a></li>
-                        <li><a href="#">Footer Information</a></li>
+                        <li><a href="{{route('footerInfo.page')}}">Footer Information</a></li>
                         <li><a href="#">Footer Social Links</a></li>
 
 

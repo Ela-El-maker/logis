@@ -16,6 +16,7 @@ use App\Http\Controllers\Home\OurTeamController;
 use App\Http\Controllers\Home\ContactUsController;
 use App\Http\Controllers\Home\SectionSettingController;
 use App\Http\Controllers\Home\LogosController;
+use App\Http\Controllers\Home\FooterinfoController;
 
 
 
@@ -123,6 +124,11 @@ Route::delete('/delete/contacts/{id}',[ContactUsController::class, 'deleteMessag
 // Statistics Routes
 Route::get('/summary',[SummaryProgramController::class, 'summary'])->name('summary.page');
 Route::post('/update/summary', [SummaryProgramController::class, 'updateSummary'])->name('update.summary');
+
+
+// FooterInfo Routes
+Route::get('/footerInfo',[FooterinfoController::class, 'footerInfo'])->name('footerInfo.page');
+Route::post('/update/footerInfo', [FooterinfoController::class, 'updateFooterInfo'])->name('update.footerInfo');
 
 
 // Section Setting Routes
