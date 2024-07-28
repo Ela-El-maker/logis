@@ -42,8 +42,5 @@ class SummaryProgramController extends Controller
     }
 
 
-    public function homeSummary()
-    {
-        return view();
-    }
+    
 }

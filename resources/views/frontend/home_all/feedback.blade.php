@@ -1,6 +1,8 @@
 @extends('frontend.main_master')
 @section('main')
-
+@php
+  $sections = App\Models\SectionSetting::find(1);
+@endphp
 <main class="main">
 
     <!-- Page Title -->
@@ -23,7 +25,7 @@
 
         <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
 
-          <div class="col-lg-5 quote-bg" style="background-image: url(assets/img/quote-bg.jpg);"></div>
+          <div class="col-lg-5 quote-bg" style="background-image: url({{asset($sections->feedback_image)}});"></div>
 
           <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
             <form action="{{route('store.feedback')}}" method="post" class="php-email-form">

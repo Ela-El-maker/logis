@@ -115,6 +115,13 @@
                 </li>
 
                 <li>
+                    <a href="{{route('section.page')}}" class=" waves-effect">
+                        <i class="ri-calendar-2-line"></i>
+                        <span>Section Setting</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{route('get.messages')}}" class=" waves-effect">
                         <i class="ri-calendar-2-line"></i>
                         <span>All Contact Messages</span>

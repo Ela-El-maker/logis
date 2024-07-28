@@ -14,6 +14,8 @@ use App\Http\Controllers\Home\CustomerFeedbackController;
 use App\Http\Controllers\Home\SummaryProgramController;
 use App\Http\Controllers\Home\OurTeamController;
 use App\Http\Controllers\Home\ContactUsController;
+use App\Http\Controllers\Home\SectionSettingController;
+
 
 
 
@@ -123,6 +125,13 @@ Route::delete('/delete/contacts/{id}',[ContactUsController::class, 'deleteMessag
 // Statistics Routes
 Route::get('/summary',[SummaryProgramController::class, 'summary'])->name('summary.page');
 Route::post('/update/summary', [SummaryProgramController::class, 'updateSummary'])->name('update.summary');
+
+
+// Section Setting Routes
+Route::get('/section',[SectionSettingController::class, 'section'])->name('section.page');
+Route::post('/update/section', [SectionSettingController::class, 'updateSection'])->name('update.section');
+
+
 // Our Team Routes
 Route::get('/all/members',[OurTeamController::class, 'allTeamMembers'])->name('all.members');
 Route::get('/members',[OurTeamController::class, 'addTeamMembers'])->name('add.member');
@@ -155,6 +164,7 @@ Route::post('/store/feedback',[CustomerFeedbackController::class, 'storeFeedback
 Route::get('/feedback',[CustomerFeedbackController::class, 'feedbackUs'])->name('feedback.us');
 
 Route::get('/home/summary',[SummaryProgramController::class, 'homeSummary'])->name('home.summary');
+Route::get('/home/section',[SectionSettingController::class, 'homeSection'])->name('home.section');
 
 
 
