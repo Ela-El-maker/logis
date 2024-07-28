@@ -323,12 +323,13 @@ class ProjectController extends Controller
 
 public function CategoryProject($id)
 {
+    $homeSlide = HomeSlide::find(1);
     $projects = Project::inRandomOrder()->limit(3)->get();
     $allProjects = Project::latest()->limit(5)->get();
     $projectPost = Project::where('project_category_id',$id)->orderBy('id','DESC')->get();
     $projectCategories = ProjectCategory::orderBy('project_category','ASC')->get();
     $categoryName = ProjectCategory::findorfail($id);
-    return view('frontend.home_all.category_project_details', compact('projects','projectPost','projectCategories','allProjects','categoryName'));
+    return view('frontend.home_all.category_project_details', compact('projects','projectPost','projectCategories','allProjects','categoryName','homeSlide'));
 }
 
 
