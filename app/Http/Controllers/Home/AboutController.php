@@ -9,6 +9,8 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Carbon;
 use App\Models\About;
+use App\Models\OurTeam;
+
 use App\Models\AboutItems;
 use Illuminate\Support\Facades\Log;
 
@@ -102,8 +104,9 @@ class AboutController extends Controller
     public  function HomeAbout()
     {
         $about = About::find(1);
+        $teamMembers = OurTeam::inrandomorder()->limit(3)->get();
         $aboutItems = AboutItems::inRandomOrder()->limit(4)->get();
-        return view('frontend.home_all.about', compact('about', 'aboutItems'));
+        return view('frontend.home_all.about', compact('about', 'aboutItems','teamMembers'));
         
     }
 

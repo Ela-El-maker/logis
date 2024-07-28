@@ -12,6 +12,8 @@ use App\Http\Controllers\Home\ServiceController;
 use App\Http\Controllers\Home\FeaturesController;
 use App\Http\Controllers\Home\CustomerFeedbackController;
 use App\Http\Controllers\Home\SummaryProgramController;
+use App\Http\Controllers\Home\OurTeamController;
+
 
 
 
@@ -108,13 +110,22 @@ Route::controller(FeaturesController::class)->group(function(){
     Route::post('/update/feature/', 'updateFeature')->name('update.feature');
     Route::delete('/delete/feature/{id}', 'deleteFeature')->name('delete.feature');
 });
-
+// Feedback Routes
 Route::get('/get/feedbacks',[CustomerFeedbackController::class, 'getFeedbacks'])->name('get.feedbacks');
 Route::delete('/delete/feedbacks/{id}',[CustomerFeedbackController::class, 'deleteFeedbacks'])->name('delete.feedbacks');
-
-
+// Statistics Routes
 Route::get('/summary',[SummaryProgramController::class, 'summary'])->name('summary.page');
 Route::post('/update/summary', [SummaryProgramController::class, 'updateSummary'])->name('update.summary');
+// Our Team Routes
+Route::get('/all/members',[OurTeamController::class, 'allTeamMembers'])->name('all.members');
+Route::get('/members',[OurTeamController::class, 'addTeamMembers'])->name('add.member');
+Route::post('/store/member',[OurTeamController::class, 'storeTeamMembers'])->name('store.member');
+Route::get('/edit/member/{id}',[OurTeamController::class, 'editTeamMembers'])->name('edit.member');
+Route::post('/update/member',[OurTeamController::class, 'updateTeamMembers'])->name('update.member');
+Route::delete('/delete/member/{id}',[OurTeamController::class, 'deleteMember'])->name('delete.member');
+
+
+
 
 });
 

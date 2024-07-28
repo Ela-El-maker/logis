@@ -117,11 +117,11 @@
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-mail-send-line"></i>
-                        <span>Email</span>
+                        <span>Our Teams</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="email-inbox.html">Inbox</a></li>
-                        <li><a href="email-read.html">Read Email</a></li>
+                        <li><a href="{{route('all.members')}}">All Team Members</a></li>
+                        <li><a href="{{route('add.member')}}">Add Team Member</a></li>
                     </ul>
                 </li>
 
