@@ -37,7 +37,7 @@ class ServiceController extends Controller
         'service_title' => ['required','max:300'],
         'service_sub_title' => ['required'],
         'service_description' => ['required'],
-        'service_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        'service_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif'],
 
     ],[
         'service_title.required' => 'Service Title is Required',
@@ -192,7 +192,7 @@ class ServiceController extends Controller
             'service_title' => ['required', 'max:300'],
             'service_sub_title' => ['required'],
             'service_description' => ['required'],
-            'service_image' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'service_image' => ['image', 'mimes:jpeg,png,jpg,gif'],
         
         ]);
 

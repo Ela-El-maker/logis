@@ -34,7 +34,7 @@ class ServiceCategoryController extends Controller
      $request->validate([
          'service_category' => ['required', 'max:100'],
          'service_category_description'=>['required', 'max:5000'],
-        'service_category_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        'service_category_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif'],
 
      ],[
          'service_category.required' => 'Service Category Name is Required',

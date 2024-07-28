@@ -38,9 +38,9 @@ class ProjectController extends Controller
         'project_title' => ['required','max:300'],
         'project_sub_title' => ['required','max:400'],
         'project_description' => ['required'],
-        'project_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        'project_image_1' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        'project_image_2' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        'project_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif'],
+        'project_image_1' => ['required', 'image', 'mimes:jpeg,png,jpg,gif'],
+        'project_image_2' => ['required', 'image', 'mimes:jpeg,png,jpg,gif'],
 
     ],[
         'project_name.required' => 'Project Name is Required',
@@ -85,8 +85,10 @@ class ProjectController extends Controller
 
     private function processImage($uploadedFile, $title, $type)
     {
-        $height = 636; // Maximum width for the image
-        $width = 852; // Maximum height for the image
+        $minWidth = 800;
+        $maxWidth = 1200;
+        $minHeight = 500;
+        $maxHeight = 750;
     
         $currentTimestamp = time(); // Get the current timestamp
         $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
@@ -103,13 +105,41 @@ class ProjectController extends Controller
         $fileName = $imageSlug . '-' . $currentTimestamp . '-' . $type . '.' . $extension;
         $publicDir = 'uploads/projects/' . $fileName; // Define the path to save the file
     
-        // Determine whether to set width or height to null for aspect ratio resizing
-        $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
+        // Get the current dimensions
+        $currentWidth = $thumbImage->width();
+        $currentHeight = $thumbImage->height();
     
-        // Resize the image while maintaining the aspect ratio
-        $thumbImage->resize($width, $height, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        // Calculate the aspect ratio
+        $aspectRatio = $currentWidth / $currentHeight;
+    
+        // Determine the new dimensions
+        $newWidth = $currentWidth;
+        $newHeight = $currentHeight;
+    
+        if ($newWidth < $minWidth || $newHeight < $minHeight) {
+            // If either dimension is too small, scale up proportionally
+            if ($newWidth < $minWidth) {
+                $newWidth = $minWidth;
+                $newHeight = $newWidth / $aspectRatio;
+            }
+            if ($newHeight < $minHeight) {
+                $newHeight = $minHeight;
+                $newWidth = $newHeight * $aspectRatio;
+            }
+        } elseif ($newWidth > $maxWidth || $newHeight > $maxHeight) {
+            // If either dimension is too large, scale down proportionally
+            if ($newWidth > $maxWidth) {
+                $newWidth = $maxWidth;
+                $newHeight = $newWidth / $aspectRatio;
+            }
+            if ($newHeight > $maxHeight) {
+                $newHeight = $maxHeight;
+                $newWidth = $newHeight * $aspectRatio;
+            }
+        }
+    
+        // Resize the image
+        $thumbImage->resize($newWidth, $newHeight);
     
         // Save the resized image to the specified path in the public directory
         $thumbImage->save(public_path($publicDir));
@@ -117,6 +147,42 @@ class ProjectController extends Controller
     
         return $publicDir;
     }
+
+
+    // private function processImage($uploadedFile, $title, $type)
+    // {
+    //     $height = 636; // Maximum width for the image
+    //     $width = 852; // Maximum height for the image
+    
+    //     $currentTimestamp = time(); // Get the current timestamp
+    //     $extension = $uploadedFile->getClientOriginalExtension(); // Get the original file extension
+    
+    //     // Generate a slug from the title
+    //     $imageSlug = Str::slug($title);
+    //     $imageName = $currentTimestamp . '.' . $extension;
+    //     $uploadedFile->move('uploads/projects', $imageName);
+    
+    //     $imgManager = new ImageManager(new Driver());
+    //     $thumbImage = $imgManager->read('uploads/projects/' . $imageName);
+    
+    //     // Construct the file name using the slug, timestamp, and original extension
+    //     $fileName = $imageSlug . '-' . $currentTimestamp . '-' . $type . '.' . $extension;
+    //     $publicDir = 'uploads/projects/' . $fileName; // Define the path to save the file
+    
+    //     // Determine whether to set width or height to null for aspect ratio resizing
+    //     $thumbImage->height() > $thumbImage->width() ? ($width = null) : ($height = null);
+    
+    //     // Resize the image while maintaining the aspect ratio
+    //     $thumbImage->resize($width, $height, function ($constraint) {
+    //         $constraint->aspectRatio();
+    //     });
+    
+    //     // Save the resized image to the specified path in the public directory
+    //     $thumbImage->save(public_path($publicDir));
+    //     unlink(public_path('uploads/projects/' . $imageName));
+    
+    //     return $publicDir;
+    // }
 
 
 
@@ -141,9 +207,9 @@ class ProjectController extends Controller
             'project_title' => ['required', 'max:300'],
             'project_sub_title' => ['required', 'max:400'],
             'project_description' => ['required'],
-            'project_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'project_image_1' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'project_image_2' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'project_image' => ['image', 'mimes:jpeg,png,jpg,gif'],
+            'project_image_1' => ['image', 'mimes:jpeg,png,jpg,gif'],
+            'project_image_2' => ['image', 'mimes:jpeg,png,jpg,gif'],
         ]);
 
         // Process project images
