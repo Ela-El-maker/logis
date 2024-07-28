@@ -15,6 +15,8 @@ use App\Http\Controllers\Home\SummaryProgramController;
 use App\Http\Controllers\Home\OurTeamController;
 use App\Http\Controllers\Home\ContactUsController;
 use App\Http\Controllers\Home\SectionSettingController;
+use App\Http\Controllers\Home\LogosController;
+
 
 
 
@@ -36,10 +38,6 @@ Route::controller(AdminController::class)->group(function(){
     Route::post('/store/profile', 'StoreProfile')->name('store.profile');
     Route::get('/change/password', 'ChangePassword')->name('change.password');
     Route::post('/update/password', 'updatePassword')->name('update.password');
-
-
-
-
 });
 
 Route::controller(HomeSliderController::class)->group(function(){
@@ -139,6 +137,10 @@ Route::post('/store/member',[OurTeamController::class, 'storeTeamMembers'])->nam
 Route::get('/edit/member/{id}',[OurTeamController::class, 'editTeamMembers'])->name('edit.member');
 Route::post('/update/member',[OurTeamController::class, 'updateTeamMembers'])->name('update.member');
 Route::delete('/delete/member/{id}',[OurTeamController::class, 'deleteMember'])->name('delete.member');
+// Logo Routes
+Route::get('/logos',[LogosController::class, 'logosIndex'])->name('logos.index');
+Route::post('/update/logos',[LogosController::class, 'updateLogos'])->name('update.logos');
+// Route::post('/update-logos', [YourController::class, 'updateLogos'])->name('update.logos');
 
 
 
