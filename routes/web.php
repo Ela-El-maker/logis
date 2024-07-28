@@ -10,6 +10,8 @@ use App\Http\Controllers\Home\ProjectCategoryController;
 use App\Http\Controllers\Home\ServiceCategoryController;
 use App\Http\Controllers\Home\ServiceController;
 use App\Http\Controllers\Home\FeaturesController;
+use App\Http\Controllers\Home\CustomerFeedbackController;
+
 
 
 
@@ -107,6 +109,8 @@ Route::controller(FeaturesController::class)->group(function(){
     Route::delete('/delete/feature/{id}', 'deleteFeature')->name('delete.feature');
 });
 
+Route::get('/get/feedbacks',[CustomerFeedbackController::class, 'getFeedbacks'])->name('get.feedbacks');
+Route::delete('/delete/feedbacks/{id}',[CustomerFeedbackController::class, 'deleteFeedbacks'])->name('delete.feedbacks');
 
 });
 
@@ -123,6 +127,11 @@ Route::get('/service/details/{id}', [ServiceController::class,'HomeServiceDetail
 Route::get('/category/project/{id}', [ProjectController::class, 'CategoryProject'])->name('category.project');
 Route::get('/category/service/{id}', [ServiceController::class, 'CategoryService'])->name('category.service');
 Route::get('/about',[AboutController::class, 'HomeAbout'])->name('home.about');
+
+Route::get('/feedback',[CustomerFeedbackController::class, 'feedbackUs'])->name('feedback.us');
+Route::post('/store/feedback',[CustomerFeedbackController::class, 'storeFeedback'])->name('store.feedback');
+Route::get('/feedback',[CustomerFeedbackController::class, 'feedbackUs'])->name('feedback.us');
+
 
 
 

@@ -15,7 +15,7 @@
                 <li><a href="{{route('services.page')}}">Services</a></li>
                 <li><a href="{{route('features.page')}}">Features</a></li>
 
-                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="{{route('feedback.us')}}">Feedbacks</a></li>
                 <li class="dropdown"><a href="#"><span>Dropdown</span> <i
                             class="bi bi-chevron-down toggle-dropdown"></i></a>
                     <ul>
