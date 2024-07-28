@@ -65,7 +65,8 @@
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="row gy-4">
+        @include('frontend.home_all.summary')
+        {{-- <div class="row gy-4">
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
@@ -95,11 +96,12 @@
             </div>
           </div><!-- End Stats Item -->
 
-        </div>
+        </div> --}}
 
       </div>
 
-    </section><!-- /Stats Section -->
+    </section>
+    <!-- /Stats Section -->
 
     <!-- Team Section -->
     <section id="team" class="team section">

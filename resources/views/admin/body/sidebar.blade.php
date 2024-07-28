@@ -108,9 +108,9 @@
                 </li>
 
                 <li>
-                    <a href="calendar.html" class=" waves-effect">
+                    <a href="{{route('summary.page')}}" class=" waves-effect">
                         <i class="ri-calendar-2-line"></i>
-                        <span>Calendar</span>
+                        <span>Summary Programs</span>
                     </a>
                 </li>
 

@@ -11,7 +11,7 @@ use App\Http\Controllers\Home\ServiceCategoryController;
 use App\Http\Controllers\Home\ServiceController;
 use App\Http\Controllers\Home\FeaturesController;
 use App\Http\Controllers\Home\CustomerFeedbackController;
-
+use App\Http\Controllers\Home\SummaryProgramController;
 
 
 
@@ -112,6 +112,10 @@ Route::controller(FeaturesController::class)->group(function(){
 Route::get('/get/feedbacks',[CustomerFeedbackController::class, 'getFeedbacks'])->name('get.feedbacks');
 Route::delete('/delete/feedbacks/{id}',[CustomerFeedbackController::class, 'deleteFeedbacks'])->name('delete.feedbacks');
 
+
+Route::get('/summary',[SummaryProgramController::class, 'summary'])->name('summary.page');
+Route::post('/update/summary', [SummaryProgramController::class, 'updateSummary'])->name('update.summary');
+
 });
 
 // Public Routes
@@ -131,6 +135,8 @@ Route::get('/about',[AboutController::class, 'HomeAbout'])->name('home.about');
 Route::get('/feedback',[CustomerFeedbackController::class, 'feedbackUs'])->name('feedback.us');
 Route::post('/store/feedback',[CustomerFeedbackController::class, 'storeFeedback'])->name('store.feedback');
 Route::get('/feedback',[CustomerFeedbackController::class, 'feedbackUs'])->name('feedback.us');
+
+Route::get('/home/summary',[SummaryProgramController::class, 'homeSummary'])->name('home.summary');
 
 
 

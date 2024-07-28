@@ -18,41 +18,7 @@
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form> --}}
 
-                <div class="row gy-4" data-aos="fade-up" data-aos-delay="300">
-
-                    <div class="col-lg-3 col-6">
-                        <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="232"
-                                data-purecounter-duration="0" class="purecounter">232</span>
-                            <p>Clients</p>
-                        </div>
-                    </div><!-- End Stats Item -->
-
-                    <div class="col-lg-3 col-6">
-                        <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="521"
-                                data-purecounter-duration="0" class="purecounter">521</span>
-                            <p>Projects</p>
-                        </div>
-                    </div><!-- End Stats Item -->
-
-                    <div class="col-lg-3 col-6">
-                        <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="1453"
-                                data-purecounter-duration="0" class="purecounter">1453</span>
-                            <p>Support</p>
-                        </div>
-                    </div><!-- End Stats Item -->
-
-                    <div class="col-lg-3 col-6">
-                        <div class="stats-item text-center w-100 h-100">
-                            <span data-purecounter-start="0" data-purecounter-end="32"
-                                data-purecounter-duration="0" class="purecounter">32</span>
-                            <p>Workers</p>
-                        </div>
-                    </div><!-- End Stats Item -->
-
-                </div>
+                @include('frontend.home_all.summary')
 
             </div>
 
