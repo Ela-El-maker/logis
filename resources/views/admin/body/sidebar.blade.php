@@ -154,10 +154,10 @@
                         <span>Footer SetUp</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="#">Footer Help Links</a></li>
-                        <li><a href="#">Footer Usefull Links</a></li>
+                        <li><a href="{{route('all.helps')}}">Footer Help Links</a></li>
+                        <li><a href="{{route('all.usefuls')}}">Footer Usefull Links</a></li>
                         <li><a href="{{route('footerInfo.page')}}">Footer Information</a></li>
-                        <li><a href="#">Footer Social Links</a></li>
+                        <li><a href="{{route('all.socials')}}">Footer Social Links</a></li>
 
 
                     </ul>

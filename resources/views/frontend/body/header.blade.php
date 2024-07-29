@@ -1,10 +1,12 @@
 <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-        <a href="index.html" class="logo d-flex align-items-center me-auto">
+@php
+    $headerTitle = App\Models\FooterInfo::find(1);
+@endphp
+        <a href="{{url('/')}}" class="logo d-flex align-items-center me-auto">
             <!-- Uncomment the line below if you also wish to use an image logo -->
             <!-- <img src="assets/img/logo.png" alt=""> -->
-            <h1 class="sitename">Logis</h1>
+            <h1 class="sitename">{{$headerTitle->info_title}}</h1>
         </a>
 
         <nav id="navmenu" class="navmenu">

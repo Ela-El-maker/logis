@@ -17,6 +17,9 @@ use App\Http\Controllers\Home\ContactUsController;
 use App\Http\Controllers\Home\SectionSettingController;
 use App\Http\Controllers\Home\LogosController;
 use App\Http\Controllers\Home\FooterinfoController;
+use App\Http\Controllers\Home\SocialLinksController;
+use App\Http\Controllers\Home\HelpLinksController;
+use App\Http\Controllers\Home\UsefulLinksController;
 
 
 
@@ -112,6 +115,42 @@ Route::controller(FeaturesController::class)->group(function(){
     Route::post('/update/feature/', 'updateFeature')->name('update.feature');
     Route::delete('/delete/feature/{id}', 'deleteFeature')->name('delete.feature');
 });
+
+
+
+
+// Social Links routes
+Route::controller(SocialLinksController::class)->group(function(){
+    Route::get('/social', 'socialItem')->name('add.social');
+    Route::post('/store/social', 'storeSocial')->name('store.social');
+    Route::get('/all/socials/', 'allSocials')->name('all.socials');
+    Route::get('/edit/social/{id}', 'editSocial')->name('edit.social');
+    Route::post('/update/social/', 'updateSocial')->name('update.social');
+    Route::delete('/delete/social/{id}', 'deleteSocial')->name('delete.social');
+});
+
+// Useful Links routes
+Route::controller(UsefulLinksController::class)->group(function(){
+    Route::get('/useful', 'usefulItem')->name('add.useful');
+    Route::post('/store/useful', 'storeUseful')->name('store.useful');
+    Route::get('/all/usefuls/', 'allUsefuls')->name('all.usefuls');
+    Route::get('/edit/useful/{id}', 'editUseful')->name('edit.useful');
+    Route::post('/update/useful/', 'updateUseful')->name('update.useful');
+    Route::delete('/delete/useful/{id}', 'deleteUseful')->name('delete.useful');
+});
+
+
+// Help Links routes
+Route::controller(HelpLinksController::class)->group(function(){
+    Route::get('/help', 'helpItem')->name('add.help');
+    Route::post('/store/help', 'storeHelp')->name('store.help');
+    Route::get('/all/helps/', 'allHelps')->name('all.helps');
+    Route::get('/edit/help/{id}', 'editHelp')->name('edit.help');
+    Route::post('/update/help/', 'updateHelp')->name('update.help');
+    Route::delete('/delete/help/{id}', 'deleteHelp')->name('delete.help');
+});
+
+
 // Feedback Routes
 Route::get('/get/feedbacks',[CustomerFeedbackController::class, 'getFeedbacks'])->name('get.feedbacks');
 Route::delete('/delete/feedbacks/{id}',[CustomerFeedbackController::class, 'deleteFeedbacks'])->name('delete.feedbacks');
